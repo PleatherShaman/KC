@@ -27,6 +27,8 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 router.post(
+
+
   "/",
   [
     check("email", "Please include a valid email").isEmail(),
@@ -34,6 +36,7 @@ router.post(
   ],
 
   async (req, res) => {
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -42,6 +45,8 @@ router.post(
     const { email, password } = req.body;
     try {
       let user = await User.findOne({ email });
+
+      console.log(user)
 
       if (!user) {
         return res.status(400).json({
@@ -75,6 +80,7 @@ router.post(
 
         { expiresIn: 3600 },
         (err, token) => {
+          console.log(err)
           if (err) throw err;
           res.json({ token });
         }
